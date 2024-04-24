@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 
 const { User } = db
 
+
+// add new user account
 router.post('/', async (req, res) => {
     let user = await User.findOne({
         where: { email: req.body.email }
@@ -18,5 +20,20 @@ router.post('/', async (req, res) => {
     }
 
 })
+
+
+// retrieves user profile
+// router.get('/profile', async (req,res) => {
+//     try {
+//         let user = await User.findOne({
+//             where: {
+//                 userId:
+//             }
+//         })
+//         res.json(user)
+//     } catch {
+//         res.json(null)
+//     }
+// })
 
 module.exports = router
