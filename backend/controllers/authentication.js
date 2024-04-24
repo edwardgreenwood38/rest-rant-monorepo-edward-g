@@ -17,7 +17,6 @@ router.post('/', async (req, res) => {
         res.json({ user })
     }
 
-    console.log(user)
 })
 
 module.exports = router
