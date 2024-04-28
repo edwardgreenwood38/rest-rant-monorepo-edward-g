@@ -2,22 +2,31 @@ const router = require('express').Router()
 const db = require("../models")
 const bcrypt = require('bcrypt')
 const jwt = require('json-web-token')
-const { User } = db
+const {
+    User
+} = db
 
 
 // add new user account
 router.post('/', async (req, res) => {
     let user = await User.findOne({
-        where: { email: req.body.email }
+        where: {
+            email: req.body.email
+        }
     })
 
     if (!user || !await bcrypt.compare(req.body.password, user.passwordDigest)) {
-        req.statusCode(404).json({
+        req.status(404).json({
             message: 'Could not find a user with the provided username and password'
         })
     } else {
-        const result = await jwt.encode(process.env.JWT_SECRET, { id: user.userId })
-        res.json({ user: user, token: result.value })
+        const result = await jwt.encode(process.env.JWT_SECRET, {
+            id: user.userId
+        })
+        res.json({
+            user: user,
+            token: result.value
+        })
     }
 
 })
@@ -25,31 +34,33 @@ router.post('/', async (req, res) => {
 
 // retrieves user profile
 router.get('/profile', async (req, res) => {
-    try {
-        // split the authorization header into [ "Bearer", "TOKEN"]
-        const [authenticationMethod, token] = req.headers.authorization.split(' ')
+    res.json(req.currentUser)
 
-        // only handle Bearer for now
-        if (authenticationMethod == 'Bearer') {
-            // decode JWT
-            const result = await jwt.decode(process.env.JWT_SECRET, token)
+    // try {
+    //     // split the authorization header into [ "Bearer", "TOKEN"]
+    //     const [authenticationMethod, token] = req.headers.authorization.split(' ')
 
-            // get logged in user's id
-            const { id } = result.value
+    //     // only handle Bearer for now
+    //     if (authenticationMethod == 'Bearer') {
+    //         // decode JWT
+    //         const result = await jwt.decode(process.env.JWT_SECRET, token)
 
-            // 
-            let user = await User.findOne({
-                where: {
-                    userId: id
-                }
-            })
+    //         // get logged in user's id
+    //         const { id } = result.value
 
-            res.json(user)
-        }
-    } catch {
-        res.json(null)
-    }
-    
+    //         // 
+    //         let user = await User.findOne({
+    //             where: {
+    //                 userId: id
+    //             }
+    //         })
+
+    //         res.json(user)
+    //     }
+    // } catch {
+    //     res.json(null)
+    // }
+
 })
 
 module.exports = router
