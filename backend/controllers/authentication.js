@@ -2,9 +2,8 @@ const router = require('express').Router()
 const db = require("../models")
 const bcrypt = require('bcrypt')
 const jwt = require('json-web-token')
-const {
-    User
-} = db
+
+const { User } = db
 
 
 // add new user account
@@ -35,32 +34,6 @@ router.post('/', async (req, res) => {
 // retrieves user profile
 router.get('/profile', async (req, res) => {
     res.json(req.currentUser)
-
-    // try {
-    //     // split the authorization header into [ "Bearer", "TOKEN"]
-    //     const [authenticationMethod, token] = req.headers.authorization.split(' ')
-
-    //     // only handle Bearer for now
-    //     if (authenticationMethod == 'Bearer') {
-    //         // decode JWT
-    //         const result = await jwt.decode(process.env.JWT_SECRET, token)
-
-    //         // get logged in user's id
-    //         const { id } = result.value
-
-    //         // 
-    //         let user = await User.findOne({
-    //             where: {
-    //                 userId: id
-    //             }
-    //         })
-
-    //         res.json(user)
-    //     }
-    // } catch {
-    //     res.json(null)
-    // }
-
 })
 
 module.exports = router
