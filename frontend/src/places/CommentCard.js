@@ -1,3 +1,6 @@
+import { useContext } from "react"
+import { CurrentUser } from "../contexts/CurrentUser"
+
 
 function CommentCard({ comment, onDelete }) {
     const { currentUser } = useContext(CurrentUser)
