@@ -35,6 +35,8 @@ function PlaceDetails() {
 		history.push('/places')
 	}
 
+	  
+
 	async function deleteComment(deletedComment) {
 		await fetch(`http://localhost:5000/places/${place.placeId}/comments/${deletedComment.commentId}`, {
 			method: 'DELETE'
@@ -46,6 +48,7 @@ function PlaceDetails() {
 				.filter(comment => comment.commentId !== deletedComment.commentId)
 		})
 	}
+	
 
 	async function createComment(commentAttributes) {
 		const response = await fetch(`http://localhost:5000/places/${place.placeId}/comments`, {
