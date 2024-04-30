@@ -14,8 +14,7 @@ function LoginForm() {
     })
 
     const [errorMessage, setErrorMessage] = useState(null)
-
-      
+ 
     
     async function handleSubmit(e) {
         e.preventDefault();
@@ -27,12 +26,12 @@ function LoginForm() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(credentials)
-            });
+            })
     
             const data = await response.json();
     
         
-            if (response.ok) {  
+            if (response.status === 200) {  
                 setCurrentUser(data.user);
                 localStorage.setItem('token', data.token);
                 history.push(`/`);
@@ -44,9 +43,6 @@ function LoginForm() {
             setErrorMessage('An error occurred, please try again');
         }
     }
-     
-  
-    
 
 
     return (

@@ -14,18 +14,31 @@ router.post('/', async (req, res) => {
         }
     })
 
-    if (!user || !await bcrypt.compare(req.body.password, user.passwordDigest)) {
-        req.status(404).json({
-            message: 'Could not find a user with the provided username and password'
-        })
+    // if (!user || !await bcrypt.compare(req.body.password, user.passwordDigest)) {
+    //     req.status(404).json({
+    //         message: 'Could not find a user with the provided username and password'
+    //     })
+    // } else {
+    //     const result = await jwt.encode(process.env.JWT_SECRET, {
+    //         id: user.userId
+    //     })
+    //     res.json({
+    //         user: user,
+    //         token: result.value
+    //     })
+    // }
+
+
+    if (!user || !(await bcrypt.compare(req.body.password, user.passwordDigest))) {
+        res.status(404).json({
+            message: 'Could not find a user with the provided email and password'
+        });
     } else {
-        const result = await jwt.encode(process.env.JWT_SECRET, {
-            id: user.userId
-        })
+        const token = jwt.encode({ id: user.userId }, process.env.JWT_SECRET);
         res.json({
             user: user,
-            token: result.value
-        })
+            token: token
+        });
     }
 
 })
