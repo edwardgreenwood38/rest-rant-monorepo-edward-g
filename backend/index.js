@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express();
 const defineCurrentUser = require('./middleware/defineCurrentUser')
+const path = require('path')
 
 
 // Express Settings
@@ -21,6 +22,12 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(defineCurrentUser)
+
+// serve static front end in production mode
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, 'client', 'build')));
+}
+
 
 
 // Controllers & Routes
